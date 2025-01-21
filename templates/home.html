@@ -2,6 +2,6 @@
 
 {% block content %}
 {% for post in post_list %}
-<p>{{ post.title }} - {{ post.author }} - {{ post.body }}</p>
+<p>{{ post.pk }} - {{ post.title }} - {{ post.author }} - {{ post.body }}</p>
 {% endfor %}
 {% endblock %}

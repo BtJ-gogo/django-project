@@ -5,9 +5,11 @@ from .views import (
     BlogCreateView,
     BlogDeleteView,
     BlogUpdateView,
+    # AddCommentView,
 )
 
 urlpatterns = [
+    # path("<int:pk>/comment/", AddCommentView.as_view(), name="comment_add"),
     path("<int:pk>/update/", BlogUpdateView.as_view(), name="blog_update"),
     path("<int:pk>/delete/", BlogDeleteView.as_view(), name="blog_delete"),
     path("create/", BlogCreateView.as_view(), name="blog_create"),

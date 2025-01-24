@@ -14,7 +14,27 @@
     </div>
     <div class="card-footer"><p>{{ post.author }} - {{ post.created_at}}</p></div>
 </div>
+<hr />
+<h2>Comments...</h2>
+{% if not post.comment.all %}
+
+<p>No Comments...</p>
+
+{% else %}
+
+{% for comment in post.comment.all %}
+<p>{{ comment.name }} - {{ comment.created_at }}
+{{ comment.body }}</p>
+{% endfor %}
 <br />
+{% endif %}
+<h2>Add comment</h2>
+<form method="Post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add</button>
+</form>
+<hr />
 <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 <a href="{% url 'blog_delete' post.pk %}" class="btn btn-secondary">Delete</a>
 <a href="{% url 'blog_update' post.pk %}" class="btn btn-secondary">Update</a>

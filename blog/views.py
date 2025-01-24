@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -63,19 +64,24 @@ class CommentPost(SingleObjectMixin, FormView):
         return reverse("blog_detail", kwargs={"pk": self.get_object().pk})
 
 
-class BlogCreateView(CreateView):
+class AdminRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class BlogCreateView(AdminRequiredMixin, CreateView):
     model = Post
     template_name = "blog_create.html"
     fields = "__all__"
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(AdminRequiredMixin, DeleteView):
     model = Post
     template_name = "blog_delete.html"
     success_url = reverse_lazy("home")
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(AdminRequiredMixin, UpdateView):
     model = Post
     fields = ["title", "body"]
     template_name = "blog_update.html"

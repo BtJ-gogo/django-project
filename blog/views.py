@@ -11,6 +11,7 @@ from .models import Post, Comment
 class HomePageView(ListView):
     model = Post
     template_name = "home.html"
+    paginate_by = 3
 
 
 """

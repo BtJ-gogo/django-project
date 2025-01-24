@@ -9,7 +9,7 @@
     </div>
     <div class="card-body">
         <div class="card-body">
-            <p class="card-text">{{ post.body }}</p>
+            <p class="card-text">{{ post.body|linebreaks }}</p>
         </div>
     </div>
     <div class="card-footer"><p>{{ post.author }} - {{ post.created_at}}</p></div>

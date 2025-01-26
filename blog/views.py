@@ -14,6 +14,10 @@ class HomePageView(ListView):
     template_name = "home.html"
     paginate_by = 3
 
+    def get(self, request, *args, **kwargs):
+        request.session["previous_url"] = request.get_full_path()
+        return super().get(request, *args, **kwargs)
+
 
 """
 class BlogDetailView(DetailView):
@@ -36,6 +40,13 @@ class BlogDetailView(DetailView):
         view = CommentPost.as_view()
         return view(request, *args, **kwargs)
 
+    """
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["previous_path"] = self.request.get_full_path()
+        return context
+    """
+
 
 class CommentGet(DetailView):
     model = Post
@@ -44,6 +55,7 @@ class CommentGet(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = CommentForm()
+        context["previous_url"] = self.request.session.get("previous_url", "/")
         return context
 
 
@@ -101,6 +113,10 @@ class CategoryBlogListView(ListView):
         context = super().get_context_data(**kwargs)
         context["category"] = self.category
         return context
+
+    def get(self, request, *args, **kwargs):
+        request.session["previous_url"] = request.get_full_path()
+        return super().get(request, *args, **kwargs)
 
 
 class AdminRequiredMixin(UserPassesTestMixin):

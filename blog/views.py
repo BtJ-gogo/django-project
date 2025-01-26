@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse, reverse_lazy
 
 from .forms import CommentForm
-from .models import Post, Comment
+from .models import Post, Category
 
 
 class HomePageView(ListView):
@@ -65,6 +66,43 @@ class CommentPost(SingleObjectMixin, FormView):
         return reverse("blog_detail", kwargs={"pk": self.get_object().pk})
 
 
+"""
+def CategoryBlogListView(request, category):
+    category_obj = get_object_or_404(Category, name=category)
+    category_posts = Post.objects.filter(category=category_obj)
+    return render(
+        request,
+        "blog_list_category.html",
+        {
+            "category": category,
+            "category_posts": category_posts,
+        },
+    )
+
+    # def get_queryset(self):
+    # return super().get_queryset()
+"""
+
+
+class CategoryBlogListView(ListView):
+    model = Post
+    template_name = "blog_list_category.html"  # 使用するテンプレート
+    context_object_name = "category_posts"  # テンプレートで使用するオブジェクト名
+    paginate_by = 3
+
+    def get_queryset(self):
+        # URLからカテゴリ名を取得して、そのカテゴリに属する投稿をフィルタリング
+        category_name = self.kwargs.get("category")
+        self.category = get_object_or_404(Category, name=category_name)
+        return Post.objects.filter(category=self.category)
+
+    def get_context_data(self, **kwargs):
+        # 追加のコンテキストデータを提供
+        context = super().get_context_data(**kwargs)
+        context["category"] = self.category
+        return context
+
+
 class AdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
@@ -73,7 +111,13 @@ class AdminRequiredMixin(UserPassesTestMixin):
 class BlogCreateView(AdminRequiredMixin, CreateView):
     model = Post
     template_name = "blog_create.html"
-    fields = "__all__"
+    fields = ["title", "author", "category", "body"]
+
+
+class CategoryCreateView(AdminRequiredMixin, CreateView):
+    model = Category
+    template_name = "category_create.html"
+    fields = ["name"]
 
 
 class BlogDeleteView(AdminRequiredMixin, DeleteView):
@@ -84,5 +128,5 @@ class BlogDeleteView(AdminRequiredMixin, DeleteView):
 
 class BlogUpdateView(AdminRequiredMixin, UpdateView):
     model = Post
-    fields = ["title", "body"]
+    fields = ["title", "category", "body"]
     template_name = "blog_update.html"

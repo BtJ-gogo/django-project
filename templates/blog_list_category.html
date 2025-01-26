@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for post in post_list %}
+{% for post in category_posts %}
 <div class="card my-4">
     <div class="card-body">
         <p class="card-text"># <a href="{% url 'blog_list_category' post.category %}">{{ post.category }}</a></p>
@@ -36,5 +36,4 @@
         <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
     {% endif %}
 </div>
-
 {% endblock %}

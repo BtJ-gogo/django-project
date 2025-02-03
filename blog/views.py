@@ -5,7 +5,7 @@ from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse, reverse_lazy
 
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 from .models import Post, Category
 
 
@@ -126,8 +126,8 @@ class AdminRequiredMixin(UserPassesTestMixin):
 
 class BlogCreateView(AdminRequiredMixin, CreateView):
     model = Post
+    form_class = PostForm
     template_name = "blog_create.html"
-    fields = ["title", "author", "category", "body"]
 
 
 class CategoryCreateView(AdminRequiredMixin, CreateView):

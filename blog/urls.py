@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from django.contrib.auth.views import LogoutView
 from .views import (
     HomePageView,
@@ -8,9 +9,14 @@ from .views import (
     BlogUpdateView,
     CategoryCreateView,
     CategoryBlogListView,
+    BlogPostAPI,
 )
 
+router = DefaultRouter()
+router.register(r"posts", BlogPostAPI)
+
 urlpatterns = [
+    path("api/", include(router.urls)),
     path(
         "category/<str:category>/",
         CategoryBlogListView.as_view(),

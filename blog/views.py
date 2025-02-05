@@ -7,6 +7,10 @@ from django.urls import reverse, reverse_lazy
 
 from .forms import CommentForm, PostForm
 from .models import Post, Category
+from .serializers import PostSerializer
+
+from rest_framework import filters
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 
 class HomePageView(ListView):
@@ -146,3 +150,10 @@ class BlogUpdateView(AdminRequiredMixin, UpdateView):
     model = Post
     fields = ["title", "category", "body"]
     template_name = "blog_update.html"
+
+
+class BlogPostAPI(ReadOnlyModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["title", "body"]

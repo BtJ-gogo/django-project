@@ -11,6 +11,22 @@ DjangoとDjango REST Frameworkを使用し、WebアプリとAPIの両方を実�
 6. API機能: 記事一覧、詳細の取得、タイトルと記事内容による検索機能
    
 ## 使用技術
+**バックエンド**
 1. Django 5.0.11
 2. Django REST Framework 3.15.2
-3. Bootstrap 5.3
+
+**フロントエンド**
+1. Bootstrap 5.3
+
+**データベース**
+1. SQLite(デフォルト)
+
+## APIエンドポイント
+GET	
+GET	/api/posts/<id>/	記事詳細取得
+GET	/api/posts/?search=<query>	タイトル・内容での検索
+|  メソッド   |  エンドポイント  |  説明  | 
+| --- | --- | --- | 
+| GET | /api/posts/  |  記事一覧取得   | 
+| GET | /api/posts/{id}/  |  記事詳細取得   | 
+| GET | /api/posts/?search={query}  |   タイトル・内容での検索  | 

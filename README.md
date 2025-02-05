@@ -22,9 +22,6 @@ DjangoとDjango REST Frameworkを使用し、WebアプリとAPIの両方を実�
 1. SQLite(デフォルト)
 
 ## APIエンドポイント
-GET	
-GET	/api/posts/<id>/	記事詳細取得
-GET	/api/posts/?search=<query>	タイトル・内容での検索
 |  メソッド   |  エンドポイント  |  説明  | 
 | --- | --- | --- | 
 | GET | /api/posts/  |  記事一覧取得   | 
